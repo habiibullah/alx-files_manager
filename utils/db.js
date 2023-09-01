@@ -18,12 +18,7 @@ class DBClient {
     const dbURL = `mongodb://${host}:${port}/${database}`;
 
     this.client = new mongodb.MongoClient(dbURL, { useUnifiedTopology: true });
-    this.client.connect().catch(err => {
-        console.error('Error connecting to MongoDB:', err);
-      });
-    } catch (error) {
-      console.error('Error initializing DBClient:', error);
-    }
+    this.client.connect();
   }
 
   /**
@@ -39,12 +34,7 @@ class DBClient {
    * @returns {Promise<Number>}
    */
   async nbUsers() {
-    try {
-      return await this.client.db().collection('users').countDocuments();
-    } catch (error) {
-      console.error('Error fetching user count:', error);
-      throw error; 
-    }
+    return this.client.db().collection('users').countDocuments();
   }
 
   /**
@@ -52,12 +42,7 @@ class DBClient {
    * @returns {Promise<Number>}
    */
   async nbFiles() {
-    try {
-      return await this.client.db().collection('files').countDocuments();
-    } catch (error) {
-      console.error('Error fetching file count:', error);
-      throw error;
-    }
+    return this.client.db().collection('files').countDocuments();
   }
 
   /**
@@ -65,12 +50,7 @@ class DBClient {
    * @returns {Promise<Collection>}
    */
   async usersCollection() {
-    try {
-      return await this.client.db().collection('users');
-    } catch (error) {
-      console.error('Error fetching users collection:', error);
-      throw error;
-    }
+    return this.client.db().collection('users');
   }
 
   /**
@@ -78,14 +58,8 @@ class DBClient {
    * @returns {Promise<Collection>}
    */
   async filesCollection() {
-    try {
-      return await this.client.db().collection('files');
-    } catch (error) {
-      console.error('Error fetching files collection:', error);
-      throw error; 
-    }
+    return this.client.db().collection('files');
   }
-  
 }
 
 export const dbClient = new DBClient();
